@@ -5,28 +5,23 @@ on: [push]
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        containers: [1, 2] # parallel runs
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Use Node.js
+      - name: Use Node.js 20
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install dependencies
-        working-directory: ./cypress/cypress-realworld-app
+        working-directory: cypress-realworld-app
         run: yarn install
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          working-directory: ./cypress-realworld-app
+          working-directory: cypress-realworld-app
           start: yarn dev
           wait-on: 'http://localhost:3001'
           wait-on-timeout: 120
@@ -34,4 +29,3 @@ jobs:
           parallel: true
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
