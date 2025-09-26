@@ -10,8 +10,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-        env:
-          HUSKY: 0
 
       - name: Use Node.js 20
         uses: actions/setup-node@v3
@@ -19,18 +17,21 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: yarn install --ignore-scripts
+        run: yarn install --frozen-lockfile
         working-directory: ./cypress/cypress-realworld-app
+        env:
+          HUSKY: 0
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          working-directory: ./cypress/cypress-realworld-app # for yarn dev
+          working-directory: ./cypress/cypress-realworld-app
           start: yarn dev
           wait-on: 'http://localhost:3001'
           wait-on-timeout: 120
           record: true
           parallel: true
-          spec: '../../e2e/cypress-refactored/**/*.cy.js' # relative to working-directory
+          spec: '../../e2e/cypress-refactored/**/*.cy.js'
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          HUSKY: 0
