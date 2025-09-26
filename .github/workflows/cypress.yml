@@ -13,7 +13,6 @@ jobs:
         with:
           node-version: 20
 
-      # Link .git to fix postinstall-postinstall
       - name: Link .git for postinstall
         run: ln -s ../../.git .git
         working-directory: ./cypress/cypress-realworld-app
