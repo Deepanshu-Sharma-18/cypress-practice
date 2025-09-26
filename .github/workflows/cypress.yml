@@ -8,35 +8,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Run Cypress Tests
+        uses: cypress-io/github-action@v6
         with:
-          fetch-depth: 0
-
-      - name: Use Node.js 20
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
-
-      - name: Create symbolic link to .git
-        run: ln -s ../../.git .git
-        working-directory: ./cypress/cypress-realworld-app
-
-      - name: Install app dependencies
-        run: yarn install --frozen-lockfile
-        working-directory: ./cypress/cypress-realworld-app
-
-      - name: Setup database
-        run: yarn db:seed
-        working-directory: ./cypress/cypress-realworld-app
-
-      - name: Install Cypress
-        run: npm install cypress wait-on
-
-      - name: Start servers in background
-        run: yarn dev &
-        working-directory: ./cypress/cypress-realworld-app
-
-      - name: Wait for servers
-        run: npx wait-on http://localhost:3000 http://localhost:3002 --timeout 120000
-
-      - name: Run Cypress tests
-        run: npx cypress run --config baseUrl=http://localhost:3000
+          build: cd cypress/cypress-realworld-app && yarn db:seed
+          start: cd cypress/cypress-realworld-app && yarn dev
+          wait-on: 'http://localhost:3000'
+        env:
+          HUSKY: 0
