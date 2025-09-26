@@ -27,6 +27,7 @@ jobs:
           working-directory: ./cypress/cypress-realworld-app
           start: yarn dev
           wait-on: 'http://localhost:3000,http://localhost:3002'
+          spec: 'cypress/e2e/cypress-refactored/tests/*'
           wait-on-timeout: 180
           record: true
         env:
