@@ -21,11 +21,12 @@ jobs:
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          working-directory: cypress-realworld-app
+          working-directory: ./cypress/cypress-realworld-app # for yarn dev
           start: yarn dev
           wait-on: 'http://localhost:3001'
           wait-on-timeout: 120
           record: true
           parallel: true
+          spec: '../../e2e/cypress-refactored/**/*.cy.js' # relative to working-directory
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
