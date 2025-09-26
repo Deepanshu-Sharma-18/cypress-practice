@@ -14,7 +14,7 @@ jobs:
         with:
           node-version: 20
 
-      # Fix postinstall-postinstall issue by linking .git
+      # Link .git to fix postinstall-postinstall
       - name: Link .git for postinstall
         run: ln -s ../../.git .git
         working-directory: ./cypress/cypress-realworld-app
@@ -28,7 +28,9 @@ jobs:
         with:
           working-directory: ./cypress/cypress-realworld-app
           start: yarn dev
-          wait-on: 'http://localhost:3000 http://localhost:3002'
+          wait-on: |
+            http://localhost:3000
+            http://localhost:3002
           wait-on-timeout: 180
           record: true
         env:
