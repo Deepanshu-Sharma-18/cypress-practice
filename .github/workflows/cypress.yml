@@ -9,11 +9,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup database
+        run: |
+          cd cypress/cypress-realworld-app
+          yarn install
+          yarn db:seed
+
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
-          build: cd cypress/cypress-realworld-app && yarn db:seed
-          start: cd cypress/cypress-realworld-app && yarn dev
+          start: yarn dev
+          working-directory: cypress/cypress-realworld-app
           wait-on: 'http://localhost:3000'
         env:
           HUSKY: 0
