@@ -20,7 +20,7 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        working-directory: ./cypress-realworld-app
+        working-directory: ./cypress/cypress-realworld-app
         run: yarn install
 
       - name: Run Cypress tests
