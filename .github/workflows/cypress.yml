@@ -24,11 +24,8 @@ jobs:
         run: yarn install --frozen-lockfile
         working-directory: ./cypress/cypress-realworld-app
 
-      - name: Run patch-package manually if needed
-        run: |
-          if [ -d "patches" ]; then
-            yarn patch-package
-          fi
+      - name: Setup database
+        run: yarn db:seed
         working-directory: ./cypress/cypress-realworld-app
 
       - name: Run Cypress tests
@@ -36,7 +33,7 @@ jobs:
         with:
           working-directory: ./cypress/cypress-realworld-app
           start: yarn dev
-          wait-on: 'http://localhost:3001'
+          wait-on: 'http://localhost:3000'
           wait-on-timeout: 120
           record: true
           parallel: true
