@@ -5,21 +5,27 @@ on: [push]
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup database
-        run: |
-          cd cypress/cypress-realworld-app
-          yarn install
-          yarn db:seed
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
 
-      - name: Run Cypress Tests
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        working-directory: ./cypress/cypress-realworld-app
+
+      - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
+          working-directory: ./cypress/cypress-realworld-app
           start: yarn dev
-          working-directory: cypress/cypress-realworld-app
-          wait-on: 'http://localhost:3000'
-        env:
-          HUSKY: 0
+          wait-on: |
+            http://localhost:3000
+            http://localhost:3002
+          wait-on-timeout: 120
+          spec: ../../e2e/cypress-refactored/tests/**/*.cy.js
