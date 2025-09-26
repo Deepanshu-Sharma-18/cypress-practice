@@ -16,11 +16,20 @@ jobs:
         with:
           node-version: 20
 
+      - name: Create symbolic link to .git
+        run: ln -s ../../.git .git
+        working-directory: ./cypress/cypress-realworld-app
+
       - name: Install dependencies
         run: yarn install --frozen-lockfile
         working-directory: ./cypress/cypress-realworld-app
-        env:
-          HUSKY: 0
+
+      - name: Run patch-package manually if needed
+        run: |
+          if [ -d "patches" ]; then
+            yarn patch-package
+          fi
+        working-directory: ./cypress/cypress-realworld-app
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
